@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.py[cod]
+*.log
+
+.streamlit/secrets.toml
+
+DataLens_Report.pdf
+
+.env
+
+.vscode/
+
+.ipynb_checkpoints/
