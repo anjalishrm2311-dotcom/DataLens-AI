@@ -5,7 +5,11 @@ import streamlit as st
 @st.cache_data(show_spinner=False)
 def load_csv(uploaded_file, encoding):
     uploaded_file.seek(0)
-    return pd.read_csv(uploaded_file, encoding=encoding)
+    return pd.read_csv(
+        uploaded_file,
+        encoding=encoding,
+        low_memory=False
+    )
 
 
 @st.cache_data(show_spinner=False)
@@ -38,6 +42,7 @@ def upload_dataset():
             for encoding in encodings:
 
                 try:
+                    with st.spinner("Loading dataset... Please wait ⏳"):
                     return load_csv(uploaded_file, encoding)
 
                 except UnicodeDecodeError:
@@ -48,6 +53,7 @@ def upload_dataset():
 
         else:
 
+            with st.spinner("Loading dataset... Please wait ⏳"):
             return load_excel(uploaded_file)
 
     except Exception as e:
