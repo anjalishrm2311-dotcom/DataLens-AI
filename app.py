@@ -229,27 +229,6 @@ if df is not None:
         """
     )
 
-    if st.session_state.summary is None:
-
-        with st.spinner("Analyzing Dataset..."):
-
-            st.session_state.summary = cached_summary(df)
-
-            st.session_state.missing_df = cached_missing(df)
-
-            st.session_state.duplicate_df = cached_duplicates(df)
-
-            st.session_state.quality_score = cached_quality(df)
-
-            st.session_state.email_report = cached_validate_emails(df)
-
-            st.session_state.insights = cached_generate_insights(
-                st.session_state.summary,
-                st.session_state.quality_score,
-                st.session_state.missing_df,
-                st.session_state.duplicate_df
-            )
-
     # ====================================
     # Sidebar Dataset Info
     # ====================================
@@ -275,14 +254,29 @@ if df is not None:
 
     if page == "Dashboard":
 
-        with st.spinner("Loading Dashboard..."):
+        if st.session_state.summary is None:
 
-            summary = st.session_state.summary
-            missing_df = st.session_state.missing_df
-            duplicate_df = st.session_state.duplicate_df
-            quality_score = st.session_state.quality_score
-            email_report = st.session_state.email_report
-            insights = st.session_state.insights
+            with st.spinner("Analyzing dataset..."):
+
+                st.session_state.summary = cached_summary(df)
+                st.session_state.missing_df = cached_missing(df)
+                st.session_state.duplicate_df = cached_duplicates(df)
+                st.session_state.quality_score = cached_quality(df)
+                st.session_state.email_report = cached_validate_emails(df)
+
+                st.session_state.insights = cached_generate_insights(
+                    st.session_state.summary,
+                    st.session_state.quality_score,
+                    st.session_state.missing_df,
+                    st.session_state.duplicate_df
+                )
+
+        summary = st.session_state.summary
+        missing_df = st.session_state.missing_df
+        duplicate_df = st.session_state.duplicate_df
+        quality_score = st.session_state.quality_score
+        email_report = st.session_state.email_report
+        insights = st.session_state.insights
 
         show_dashboard_page(
             df,
