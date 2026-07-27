@@ -43,7 +43,7 @@ def upload_dataset():
 
                 try:
                     with st.spinner("Loading dataset... Please wait ⏳"):
-                    return load_csv(uploaded_file, encoding)
+                        return load_csv(uploaded_file, encoding)
 
                 except UnicodeDecodeError:
                     continue
