@@ -152,7 +152,53 @@ analysis_keys = [
 for key in analysis_keys:
     if key not in st.session_state:
         st.session_state[key] = None
+        
+def get_summary(df):
+    if st.session_state.summary is None:
+        st.session_state.summary = cached_summary(df)
+    return st.session_state.summary
 
+
+def get_missing(df):
+    if st.session_state.missing_df is None:
+        st.session_state.missing_df = cached_missing(df)
+    return st.session_state.missing_df
+
+
+def get_duplicates(df):
+    if st.session_state.duplicate_df is None:
+        st.session_state.duplicate_df = cached_duplicates(df)
+    return st.session_state.duplicate_df
+
+
+def get_quality(df):
+    if st.session_state.quality_score is None:
+        st.session_state.quality_score = cached_quality(df)
+    return st.session_state.quality_score
+
+
+def get_email_report(df):
+    if st.session_state.email_report is None:
+        st.session_state.email_report = cached_validate_emails(df)
+    return st.session_state.email_report
+
+
+def get_insights(df):
+    if st.session_state.insights is None:
+
+        summary = get_summary(df)
+        quality = get_quality(df)
+        missing = get_missing(df)
+        duplicates = get_duplicates(df)
+
+        st.session_state.insights = cached_generate_insights(
+            summary,
+            quality,
+            missing,
+            duplicates
+        )
+
+    return st.session_state.insights
 # ====================================
 # Upload Dataset
 # ====================================
@@ -271,12 +317,12 @@ if df is not None:
                     st.session_state.duplicate_df
                 )
 
-        summary = st.session_state.summary
-        missing_df = st.session_state.missing_df
-        duplicate_df = st.session_state.duplicate_df
-        quality_score = st.session_state.quality_score
-        email_report = st.session_state.email_report
-        insights = st.session_state.insights
+        summary = get_summary(df)
+        missing_df = get_missing(df)
+        duplicate_df = get_duplicates(df)
+        quality_score = get_quality(df)
+        email_report = get_email_report(df)
+        insights = get_insights(df)
 
         show_dashboard_page(
             df,
@@ -311,12 +357,12 @@ if df is not None:
 
         with st.spinner("Preparing Report..."):
 
-            summary = st.session_state.summary
-            missing_df = st.session_state.missing_df
-            duplicate_df = st.session_state.duplicate_df
-            quality_score = st.session_state.quality_score
-            email_report = st.session_state.email_report
-            insights = st.session_state.insights
+            summary = get_summary(df)
+            missing_df = get_missing(df)
+            duplicate_df = get_duplicates(df)
+            quality_score = get_quality(df)
+            email_report = get_email_report(df)
+            insights = get_insights(df)
 
             memory_usage = round(
                 df.memory_usage(deep=True).sum() / (1024 * 1024),
