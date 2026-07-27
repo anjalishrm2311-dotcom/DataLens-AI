@@ -32,6 +32,10 @@ def upload_dataset():
 
         if uploaded_file.name.endswith(".csv"):
 
+            # Show warning for large files
+            if uploaded_file.size > 100 * 1024 * 1024:
+                st.warning("⚠️ Large dataset detected. Initial loading may take a while.")
+
             encodings = [
                 "utf-8",
                 "latin1",
@@ -40,7 +44,6 @@ def upload_dataset():
             ]
 
             for encoding in encodings:
-
                 try:
                     with st.spinner("Loading dataset... Please wait ⏳"):
                         return load_csv(uploaded_file, encoding)
@@ -54,10 +57,9 @@ def upload_dataset():
         else:
 
             with st.spinner("Loading dataset... Please wait ⏳"):
-            return load_excel(uploaded_file)
+                return load_excel(uploaded_file)
 
     except Exception as e:
 
         st.error(f"Error reading file:\n{e}")
-
         return None
