@@ -308,18 +308,36 @@ if df is not None:
 
             with st.spinner("Analyzing dataset..."):
 
-                st.session_state.summary = cached_summary(df)
-                st.session_state.missing_df = cached_missing(df)
-                st.session_state.duplicate_df = cached_duplicates(df)
-                st.session_state.quality_score = cached_quality(df)
-                st.session_state.email_report = cached_validate_emails(df)
+        
 
+                start = time.perf_counter()
+                st.session_state.summary = cached_summary(df)
+                st.write(f"Summary: {time.perf_counter()-start:.2f}s")
+
+                start = time.perf_counter()
+                st.session_state.missing_df = cached_missing(df)
+                st.write(f"Missing: {time.perf_counter()-start:.2f}s")
+
+                start = time.perf_counter()
+                st.session_state.duplicate_df = cached_duplicates(df)
+                st.write(f"Duplicates: {time.perf_counter()-start:.2f}s")
+
+                start = time.perf_counter()
+                st.session_state.quality_score = cached_quality(df)
+                st.write(f"Quality: {time.perf_counter()-start:.2f}s")
+
+                start = time.perf_counter()
+                st.session_state.email_report = cached_validate_emails(df)
+                st.write(f"Email: {time.perf_counter()-start:.2f}s")
+
+                start = time.perf_counter()
                 st.session_state.insights = cached_generate_insights(
                     st.session_state.summary,
                     st.session_state.quality_score,
                     st.session_state.missing_df,
                     st.session_state.duplicate_df
                 )
+                st.write(f"Insights: {time.perf_counter()-start:.2f}s")
 
         start = time.perf_counter()
         summary = get_summary(df)
