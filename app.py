@@ -341,16 +341,16 @@ if df is not None:
         insights = get_insights(df)
         st.write(f"Insights Time: {time.perf_counter()-start:.2f}s")
 
-        show_dashboard_page(
-            df,
-            summary,
-            quality_score,
-            missing_df,
-            duplicate_df,
-            email_report,
-            insights
-        )
-
+        # show_dashboard_page(
+        #     df,
+        #     summary,
+        #     quality_score,
+        #     missing_df,
+        #     duplicate_df,
+        #     email_report,
+        #     insights
+        # )
+        st.success("Dashboard reached successfully")
     elif page == "Profiling":
 
         analysis_df = sample_dataframe(df)
