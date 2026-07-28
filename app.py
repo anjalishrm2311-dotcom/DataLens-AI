@@ -203,8 +203,6 @@ def get_insights(df):
 # Upload Dataset
 # ====================================
 
-uploaded_df = upload_dataset()
-
 start_upload = time.perf_counter()
 
 uploaded_df = upload_dataset()
