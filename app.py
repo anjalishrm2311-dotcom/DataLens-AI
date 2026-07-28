@@ -25,8 +25,6 @@ from utils.performance import (
     is_large_dataset,
     sample_dataframe
 )
-APP_START = time.perf_counter()
-print(f"APP START: {time.time()}")
 # ====================================
 # Page Configuration
 # ====================================
@@ -204,11 +202,7 @@ def get_insights(df):
 # Upload Dataset
 # ====================================
 
-start_upload = time.perf_counter()
-
 uploaded_df = upload_dataset()
-
-st.write(f"After upload: {time.perf_counter() - start_upload:.2f} seconds")
 
 if uploaded_df is not None:
 
@@ -313,24 +307,19 @@ if df is not None:
 
                 start = time.perf_counter()
                 st.session_state.summary = cached_summary(df)
-                st.write(f"Summary: {time.perf_counter()-start:.2f}s")
 
                 start = time.perf_counter()
                 st.session_state.missing_df = cached_missing(df)
-                st.write(f"Missing: {time.perf_counter()-start:.2f}s")
-
+               
                 start = time.perf_counter()
                 st.session_state.duplicate_df = cached_duplicates(df)
-                st.write(f"Duplicates: {time.perf_counter()-start:.2f}s")
-
+                
                 start = time.perf_counter()
                 st.session_state.quality_score = cached_quality(df)
-                st.write(f"Quality: {time.perf_counter()-start:.2f}s")
-
+                
                 start = time.perf_counter()
                 st.session_state.email_report = cached_validate_emails(df)
-                st.write(f"Email: {time.perf_counter()-start:.2f}s")
-
+                
                 start = time.perf_counter()
                 st.session_state.insights = cached_generate_insights(
                     st.session_state.summary,
@@ -338,42 +327,26 @@ if df is not None:
                     st.session_state.missing_df,
                     st.session_state.duplicate_df
                 )
-                st.write(f"Insights: {time.perf_counter()-start:.2f}s")
+                
 
-        start = time.perf_counter()
         summary = get_summary(df)
-        st.write(f"Summary Time: {time.perf_counter()-start:.2f}s")
-
-        start = time.perf_counter()
         missing_df = get_missing(df)
-        st.write(f"Missing Time: {time.perf_counter()-start:.2f}s")
-
-        start = time.perf_counter()
         duplicate_df = get_duplicates(df)
-        st.write(f"Duplicate Time: {time.perf_counter()-start:.2f}s")
-
-        start = time.perf_counter()
         quality_score = get_quality(df)
-        st.write(f"Quality Score Time: {time.perf_counter()-start:.2f}s")
-
-        start = time.perf_counter()
         email_report = get_email_report(df)
-        st.write(f"Email Validation Time: {time.perf_counter()-start:.2f}s")
-
-        start = time.perf_counter()
         insights = get_insights(df)
-        st.write(f"Insights Time: {time.perf_counter()-start:.2f}s")
+        
 
-        # show_dashboard_page(
-        #     df,
-        #     summary,
-        #     quality_score,
-        #     missing_df,
-        #     duplicate_df,
-        #     email_report,
-        #     insights
-        # )
-        st.success("Dashboard reached successfully")
+        show_dashboard_page(
+            df,
+            summary,
+            quality_score,
+            missing_df,
+            duplicate_df,
+            email_report,
+            insights
+        )
+
     elif page == "Profiling":
 
         analysis_df = sample_dataframe(df)
@@ -427,4 +400,3 @@ st.sidebar.caption("© 2026 DataLens AI")
 st.sidebar.caption("Developed by Anjali")
 
 st.sidebar.caption("Powered by Streamlit") 
-st.write(f"Total app execution: {time.perf_counter() - APP_START:.2f} seconds")

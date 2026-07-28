@@ -1,7 +1,8 @@
 import pandas as pd
 import streamlit as st
 import time
-
+import zipfile
+import io
 
 @st.cache_data(show_spinner=False)
 def load_csv(uploaded_file, encoding):
@@ -26,12 +27,15 @@ def load_excel(uploaded_file):
     uploaded_file.seek(0)
     return pd.read_excel(uploaded_file)
 
+st.info(
+    "💡 Tip: For faster uploads on slow internet, upload a ZIP file containing your CSV."
+)
 
 def upload_dataset():
 
     uploaded_file = st.file_uploader(
         "📂 Upload Dataset",
-        type=["csv", "xlsx"]
+        type=["csv", "xlsx", "zip"]
     )
 
     if uploaded_file is None:
@@ -62,6 +66,22 @@ def upload_dataset():
 
             st.error("Unable to read CSV. Unsupported encoding.")
             return None
+
+        elif uploaded_file.name.endswith(".zip"):
+
+            with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
+                zip_files = zip_ref.namelist()
+                if not zip_files:
+                    st.error("ZIP file is empty.")
+                    return None
+
+                # Assuming the first file in the ZIP is the one we want to read
+                file_name = zip_files[0]
+                with zip_ref.open(file_name) as f:
+                    if file_name.endswith(".csv"):
+                        return load_csv(io.BytesIO(f.read()), "utf-8")
+                    elif file_name.endswith(".xlsx"):
+                        return load_excel(io.BytesIO(f.read()))
 
         else:
 
