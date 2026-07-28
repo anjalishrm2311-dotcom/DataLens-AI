@@ -1,16 +1,25 @@
 import pandas as pd
 import streamlit as st
+import time
 
 
 @st.cache_data(show_spinner=False)
 def load_csv(uploaded_file, encoding):
     uploaded_file.seek(0)
-    return pd.read_csv(
+
+    start = time.perf_counter()
+
+    df = pd.read_csv(
         uploaded_file,
         encoding=encoding,
         low_memory=False
     )
 
+    end = time.perf_counter()
+
+    st.write(f"CSV Read Time: {end-start:.2f} seconds")
+
+    return df
 
 @st.cache_data(show_spinner=False)
 def load_excel(uploaded_file):
