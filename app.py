@@ -205,6 +205,12 @@ def get_insights(df):
 
 uploaded_df = upload_dataset()
 
+start_upload = time.perf_counter()
+
+uploaded_df = upload_dataset()
+
+st.write(f"After upload: {time.perf_counter() - start_upload:.2f} seconds")
+
 if uploaded_df is not None:
 
     # Only update if a different DataFrame object is uploaded
