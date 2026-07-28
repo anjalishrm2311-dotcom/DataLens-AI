@@ -25,7 +25,7 @@ from utils.performance import (
     is_large_dataset,
     sample_dataframe
 )
-
+APP_START = time.perf_counter()
 # ====================================
 # Page Configuration
 # ====================================
@@ -426,3 +426,4 @@ st.sidebar.caption("© 2026 DataLens AI")
 st.sidebar.caption("Developed by Anjali")
 
 st.sidebar.caption("Powered by Streamlit") 
+st.write(f"Total app execution: {time.perf_counter() - APP_START:.2f} seconds")
