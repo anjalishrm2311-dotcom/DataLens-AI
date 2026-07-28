@@ -26,6 +26,7 @@ from utils.performance import (
     sample_dataframe
 )
 APP_START = time.perf_counter()
+print(f"APP START: {time.time()}")
 # ====================================
 # Page Configuration
 # ====================================
