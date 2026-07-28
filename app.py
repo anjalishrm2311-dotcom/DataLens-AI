@@ -317,12 +317,29 @@ if df is not None:
                     st.session_state.duplicate_df
                 )
 
+        start = time.perf_counter()
         summary = get_summary(df)
+        st.write(f"Summary Time: {time.perf_counter()-start:.2f}s")
+
+        start = time.perf_counter()
         missing_df = get_missing(df)
+        st.write(f"Missing Time: {time.perf_counter()-start:.2f}s")
+
+        start = time.perf_counter()
         duplicate_df = get_duplicates(df)
+        st.write(f"Duplicate Time: {time.perf_counter()-start:.2f}s")
+
+        start = time.perf_counter()
         quality_score = get_quality(df)
+        st.write(f"Quality Score Time: {time.perf_counter()-start:.2f}s")
+
+        start = time.perf_counter()
         email_report = get_email_report(df)
+        st.write(f"Email Validation Time: {time.perf_counter()-start:.2f}s")
+
+        start = time.perf_counter()
         insights = get_insights(df)
+        st.write(f"Insights Time: {time.perf_counter()-start:.2f}s")
 
         show_dashboard_page(
             df,
